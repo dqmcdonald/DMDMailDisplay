@@ -6,6 +6,11 @@ import imaplib
 import email
 import private as private
 
+sys.path.insert(0, '/usr/lib/python2.7/bridge/') 
+                                                
+from bridgeclient import BridgeClient as bridgeclient
+
+value = bridgeclient()
 
 # Note: This function definition needs to be placed
 #       before the previous block of code that calls it.
@@ -24,8 +29,7 @@ def process_mailbox(M):
           print "ERROR getting message", num
           return
 
-
-      f=open("/tmp/todisp.txt",'w');                    
+               
       msg = email.message_from_string(data[0][1])
       if msg.is_multipart():                     
         p = msg.get_payload(0)                   
@@ -36,10 +40,10 @@ def process_mailbox(M):
       for l in lines.split('\n'):                
           if not l.startswith( "Content-Type:") and len(l) > 1:
             print l                                            
-            f.write(l);                                        
-            f.write('\n');                                     
+            value.put("DMDTODISP",l)                               
+                                     
                                                                
-      f.close();            
+              
       
 
 

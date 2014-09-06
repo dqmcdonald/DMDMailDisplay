@@ -12,7 +12,8 @@ const uint8_t *FONT =  Arial14;
 SoftDMD dmd(1, 1); // DMD controls the entire display
 
 #define SCRIPT "/mnt/sda1/arduino/www/DMDMailDisplay/DMDMailDisplay.py"
-#define FNAME "/tmp/todisp.txt"
+
+char buff[128];
 
 int i = 0;
 char c;
@@ -33,6 +34,8 @@ void setup() {
 
   FileSystem.begin();
 
+  Bridge.put("DMDTODISP", "Nothing");
+
 }
 
 
@@ -50,21 +53,15 @@ void loop() {
   if ( millis() > display_message_now ) {
     DMD_TextBox box(dmd);  // "box" provides a text box to automatically write to/scroll the display
 
+ 
+    Bridge.get("DMDTODISP", buff, 128 );
+    for ( i = 0; i < strlen(buff); i++ ) {
 
-
-    File f = FileSystem.open(FNAME, FILE_READ);
-    if ( f ) {
-      while ( true ) {
-        i = f.read();
-        if ( i < 0 )
-          break;
-        c = (char)i;
-        box.print(c);
-
-        delay(200);
-      }
-      f.close();
+      box.print(buff[i]);
+      delay(200);
     }
+
+
 
     delay(1000);
     dmd.clearScreen();
