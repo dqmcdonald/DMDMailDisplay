@@ -48,10 +48,13 @@ int message_serial_num = 0; // Give each message a unique serial number in the s
 
 
 const char* messages[] = {
-  "Hi There",
-  "Thanks",
+  "Call me soon",
+  "Miss you",
   "Love you",
-  "Miss you too"
+  "How's it going?",
+  "Just got back from school",
+  "Having fun?",
+  "Send me an email"
 };
 
 
@@ -177,17 +180,26 @@ int getMessageIndex( int uid ) {
   int idx = -1;
 
   switch ( uid ) {
-    case 244:
+    case 84:
       idx = 0;
       break;
-    case 84:
+    case 37:
       idx = 1;
       break;
-    case 37:
+    case 205:
       idx = 2;
       break;
-    case 205:
+    case 80:
       idx = 3;
+      break;
+    case 32:
+      idx = 4;
+      break;
+    case 192:
+      idx = 5;
+      break;
+    case 16:
+      idx = 6;
       break;
     default:
       idx = -1;
@@ -208,7 +220,7 @@ void sendEmail( int idx ) {
   displayText(messages[idx]);
   Bridge.put("TOEMAIL", messages[idx]);
   message_serial_num += 1;
-  sprintf(buff,"%d", message_serial_num );
+  sprintf(buff, "%d", message_serial_num );
   Bridge.put("EMAILSER", buff);
   Process p;
   p.begin("python");
